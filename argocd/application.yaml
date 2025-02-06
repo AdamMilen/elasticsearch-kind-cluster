@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: es-operator-argo-application
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
+    targetRevision: dev
+    path: argocd/es-operator-manifests
+  destination: 
+    server: https://kubernetes.default.svc
+    namespace: elastic-system
+
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+
+    automated:
+      selfHeal: true
+      prune: true

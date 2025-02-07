@@ -1,0 +1,19 @@
+# servicemonitor for scraping elasticsearch exporter
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  labels:
+    release: kind-prometheus
+  name: elasticsearch-exporter
+  namespace: monitoring
+spec:
+  endpoints:
+  - interval: 30s
+    targetPort: 9108
+    path: /metrics
+  namespaceSelector:
+    matchNames:
+    - default
+  selector:
+    matchLabels:
+      operated-prometheus: "true"

@@ -28,5 +28,15 @@ helm install kind-prometheus --namespace monitoring --create-cluster prometheus-
 # Installing prometheus operator and setting the correct ClusterIP and without cert check
 helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter --set es.uri="https://elastic:x42vf8y18CngC4L4u15X1oiy@quickstart-es-http:9200" --set es.sslSkipVerify=true
 
-# Adding scrape config
-kubectl edit kind-prometheus-kube-prome-prometheus -n monitoring
+# Connecting exporter to Prometheus: option 1, Adding scrape config
+kubectl edit prometheus kind-prometheus-kube-prome-prometheus -n monitoring
+
+kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run=client -oyaml > additional-scrape-configs.yaml
+
+kubectl apply -f additional-scrape-configs.yaml -n monitoring
+
+# Connecting exporter to Prometheus: option 2, configuring servicemonitor
+kubectl apply -f servicemonitor.yaml
+
+# edit prometheus instance to matchlabel servicemonitor (release=kind-prometheus)
+kubectl edit prometheus kind-prometheus-kube-prome-prometheus -n monitoring

@@ -44,8 +44,8 @@ user: admin <br />
 password: prom-operator <br />
 
 Links:<br />
-[Prometheus](localhost:9090) <br />
-[Grafana](localhost:3000)
+[Prometheus](http://localhost:9090) <br />
+[Grafana](http://localhost:3000)
 
 
 

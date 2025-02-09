@@ -8,7 +8,7 @@ metadata:
       k8s-sidecar-target-directory = "/tmp/dashboards/kubernetes"
 data:
   app-status.json: |
-   {
+    {
       "annotations": {
         "list": [
           {
@@ -25,7 +25,7 @@ data:
           }
         ]
       },
-      "description": "Prometheus Elasticsearch Exporter minimal dashboard",
+      "description": "A quickstart to setup the Prometheus Elasticsearch Exporter with preconfigured dashboards, alerting rules, and recording rules.",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
@@ -773,7 +773,7 @@ data:
         }
       ],
       "preload": false,
-      "refresh": "",
+      "refresh": false,
       "schemaVersion": 40,
       "tags": [
         "elasticsearch",
@@ -870,8 +870,8 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Elasticsearch Exporter Dashboard",
+      "title": "Elasticsearch Exporter Quickstart and Dashboard",
       "uid": "4yyL6dBMk",
       "version": 5,
       "weekStart": ""
-    }
+    }  

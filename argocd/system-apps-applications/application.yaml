@@ -9,12 +9,15 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://prometheus-community.github.io/helm-charts
+  - repoURL: https://prometheus-community.github.io/helm-charts
     targetRevision: 68.4.5
     chart: kube-prometheus-stack
     helm:
       valueFiles:
-      - argocd/system-apps-applications/values-prom-operator.yaml
+      - $values/argocd/system-apps-applications/values-prom-operator.yaml
+  - repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
+    targetRevision: dev
+    ref: values
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

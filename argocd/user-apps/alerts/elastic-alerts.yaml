@@ -41,7 +41,7 @@ spec:
           summary: "Elasticsearch high disk usage"
           description: "An elasticsearch node has less than 20% free disk space."
 
-      - alert: ElasticsearchHeapTooHigh
+      - alert: ElasticsearchHeapUsageTooHigh
         expr: elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"} > 0.9
         for: 15m
         labels:

@@ -135,3 +135,4 @@ check why initial setup didnt work
  /usr/bin/bash
  /bin/bash
 
+check fo finalizer argocd in root applications

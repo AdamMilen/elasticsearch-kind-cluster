@@ -17,26 +17,26 @@ Enter the repo folder and run the following commands: <br />
 
 
 
-# check if kind cluster created
+Check if kind cluster created <br />
 `kubectl get no`
 
 # Initial setup
 Run `./initial_setup.sh` <br />
 This script installs argocd and linkerd on kind cluster. <br />
 
-# deploying system application and user applications using app of apps pattern
+deploying system application and user applications using app of apps pattern <br />
 1. `kubectl apply -f ./argocd/root-system-apps.yaml`
 2. `kubectl apply -f ./argocd/root-user-apps.yaml`
 
 
-# changing elastic built-in user password
+changing elastic built-in user password <br />
 wait for elasticsearch application to be healthy then execute the command below <br />
 `kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin` <br />
 This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br />
 
 
 
-# edit /etc/hosts
+edit /etc/hosts <br />
 127.0.0.1 nginx.elasticsearch.local <br />
 This will let you enter nginx.elasticsearch.local in the url. <br />
 

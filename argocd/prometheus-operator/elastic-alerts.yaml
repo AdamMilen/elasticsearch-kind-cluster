@@ -1,0 +1,22 @@
+# basic elasticsearch alert
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    release: kind-prometheus1
+  name: elasticsearch-rule
+  namespace: monitoring
+spec:
+  groups:
+  - name: ElasticsearchTooFewNodesRunning
+    rules:
+
+      - alert: ElasticsearchTooFewNodesRunning
+        expr: elasticsearch_cluster_health_number_of_nodes < 1
+        for: 1m
+        labels:
+          severity: critical
+          app: elasticsearch
+        annotations:
+          summary: "Elasticsearch running on less than 1 nodes"
+          description: "There are only {{$value}} < 1 Elasticsearch nodes running."

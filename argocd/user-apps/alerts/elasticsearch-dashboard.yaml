@@ -5,7 +5,7 @@ metadata:
   labels:
      grafana_dashboard: "1"
   annotations:
-      k8s-sidecar-target-directory = "/tmp/dashboards/kubernetes"
+      k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"
 data:
   app-status.json: |-
     {

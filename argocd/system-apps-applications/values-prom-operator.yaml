@@ -7,3 +7,7 @@ alertmanager:
     alertmanagerConfigSelector:
     alertmanagerConfigMatcherStrategy:
       type: None
+prometheusOperator:
+  admissionWebhooks:
+    patch:
+      enabled: false

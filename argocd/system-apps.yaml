@@ -11,7 +11,7 @@ spec:
     name: in-cluster
   project: default
   source:
-    path: system-apps-applications
+    path: argocd/system-apps-applications
     repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
     targetRevision: dev
   syncPolicy:

@@ -14,7 +14,7 @@ spec:
     chart: kube-prometheus-stack
     helm:
       valueFiles:
-      - values-prom-operator.yaml
+      - argocd/system-apps-applications/values-prom-operator.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: monitoring

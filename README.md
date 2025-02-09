@@ -1,24 +1,24 @@
 # elasticsearch-assignment
 
-copy shell.nix to your working directory
-nix-shell
-kind create cluster --name=elastic-linkerd --config=kind-config.yaml
+copy shell.nix to your working directory <br />
+`nix-shell`
+`kind create cluster --name=elastic-linkerd --config=kind-config.yaml`
 
 # check if kind cluster created
-kubectl get no
+`kubectl get no`
 
 # Initial setup
-Run ./initial_setup.sh <br />
+Run `./initial_setup.sh` <br />
 This script installs argocd and linkerd on kind cluster. <br />
 
 # deploying system application and user applications using app of apps pattern
-1. kubectl apply -f ./argocd/root-system-apps.yaml
-2. kubectl apply -f ./argocd/root-user-apps.yaml
+1. `kubectl apply -f ./argocd/root-system-apps.yaml`
+2. `kubectl apply -f ./argocd/root-user-apps.yaml`
 
 
 # changing elastic built-in user password
 wait for elasticsearch application to be healthy then execute the command below <br />
-kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin <br />
+`kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin` <br />
 This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br />
 
 

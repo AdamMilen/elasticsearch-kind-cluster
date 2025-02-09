@@ -23,6 +23,9 @@ sh <(curl -L https://nixos.org/nix/install)
 - Open a new terminal and navigate to the repository folder.
 - Ensure **Docker Desktop** is running for the Kind cluster to function properly.
 
+#### Uninstalling nix:
+[link](https://nix.dev/manual/nix/2.21/installation/uninstall)
+
 ---
 
 ## Getting Started

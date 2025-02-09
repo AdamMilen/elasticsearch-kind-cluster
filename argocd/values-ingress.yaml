@@ -1,0 +1,6 @@
+controller:
+  podAnnotations:
+    linkerd.io/inject: enabled
+  nodeSelector:
+    kubernetes.io/hostname: elastic-linkerd-control-plane
+    kubernetes.io/os: linux

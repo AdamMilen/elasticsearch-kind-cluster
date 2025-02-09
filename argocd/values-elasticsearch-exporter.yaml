@@ -1,0 +1,8 @@
+podAnnotations:
+  linkerd.io/inject: enabled
+service:
+  labels: 
+    operated-prometheus: "true"
+es:
+  uri: http://elastic:adminadmin@elastic-linkerd-es-http:9200
+  sslSkipVerify: true

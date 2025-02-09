@@ -1,6 +1,6 @@
 # elasticsearch-assignment
 In a Nix shell environment, you can immediately use any program packaged with Nix, without installing it permanently. <br />
-Every command will be executed within nix shell. <br />
+**Every command will be executed within nix shell.** <br />
 
 Multi-user installation <br />
 Downloading Nix on WSL2 Windows <br />
@@ -24,9 +24,10 @@ Check if kind cluster created <br />
 Run `./initial_setup.sh` <br />
 This script installs argocd and linkerd on kind cluster. <br />
 
-deploying system application(Prometheus operator and Ingress) and user applications(ECK operator, elasticsearch, exporter and alerts) using app of apps pattern <br />
-1. `kubectl apply -f ./argocd/root-system-apps.yaml`
-2. `kubectl apply -f ./argocd/root-user-apps.yaml`
+Deploying system application(Prometheus operator and Ingress) and user applications(ECK operator, elasticsearch, exporter and alerts) using app of apps pattern <br />
+**Wait for system-apps to finish then apply the root-user-apps**
+1. `kubectl apply -f ./argocd/root-system-apps.yaml` Takes aprox 5 minutes <br />
+2. `kubectl apply -f ./argocd/root-user-apps.yaml` Takes aprox 3 minutes <br />
 
 
 changing elastic built-in user password <br />

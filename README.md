@@ -36,12 +36,17 @@ changing elastic built-in user password <br />
 This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br /><br />
 
 Port forward prometheus and grafana instance <br />
-kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 & <br />
+`kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 &` <br />
 
-kubectl port-forward svc/prometheus-operator-grafana -n monitoring 3000:80 & <br />
+`kubectl port-forward svc/prometheus-operator-grafana -n monitoring 3000:80 &` <br />
 Grafana: <br />
-user: admin
-password: prom-operator
+user: admin <br />
+password: prom-operator <br />
+
+Links:<br />
+[Prometheus](localhost:9090) <br />
+[Grafana](localhost:3000)
+
 
 
 

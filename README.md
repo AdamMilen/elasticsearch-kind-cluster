@@ -26,12 +26,13 @@ Check if kind cluster created <br />
 `kubectl get no`
 
 # Initial setup
-chmod +x ./initial_setup.sh
+chmod +x ./initial_setup.sh <br />
 Run `./initial_setup.sh` <br />
 This script installs argocd and linkerd on kind cluster. <br />
+You need to provide prompt throughout the script so keep watch <br />
 
 Deploying system application(Prometheus operator and Ingress) and user applications(ECK operator, elasticsearch, exporter and alerts) using app of apps pattern <br />
-**Wait for system-apps to finish then apply the root-user-apps**
+**Wait for system-apps to finish(only ingress-nginx svc progressing is okay) then apply the root-user-apps**
 1. `kubectl apply -f ./argocd/root-system-apps.yaml` Takes aprox 5 minutes <br />
 2. `kubectl apply -f ./argocd/root-user-apps.yaml` Takes aprox 3 minutes <br />
 

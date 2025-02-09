@@ -1,0 +1,16 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: system-apps
+  namespace: argocd
+  finalizers:
+  - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: default
+    name: in-cluster
+  project: default
+  source:
+    path: system-apps-applications
+    repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
+    targetRevision: dev

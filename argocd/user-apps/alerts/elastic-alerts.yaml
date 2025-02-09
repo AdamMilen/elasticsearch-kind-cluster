@@ -12,11 +12,11 @@ spec:
     rules:
 
       - alert: ElasticsearchTooFewNodesRunning
-        expr: elasticsearch_cluster_health_number_of_nodes < 1
+        expr: elasticsearch_cluster_health_number_of_nodes < 1 # supposed to be 3
         for: 1m
         labels:
           severity: critical
           app: elasticsearch
         annotations:
-          summary: "Elasticsearch running on less than 1 nodes"
-          description: "There are only {{$value}} < 1 Elasticsearch nodes running."
+          summary: "Elasticsearch running on less than 1 nodes" # supposed to be 3
+          description: "There are only {{$value}} < 1 Elasticsearch nodes running." # supposed to be 3

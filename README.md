@@ -10,6 +10,8 @@ Downloading Nix on WSL2 Windows <br />
 Downloading on MacOS <br />
 `sh <(curl -L https://nixos.org/nix/install)` <br />
 
+Open new terminal and enter repo folder <br />
+
 **Make sure docker desktop is running for kind cluster to work** <br />
 
 

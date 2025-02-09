@@ -14,3 +14,8 @@ prometheusOperator:
       enabled: false
   tls:
     enabled: false
+grafana:
+  sidecar:
+    dashboards:
+      annotations:
+        k8s-sidecar-target-directory: "/tmp/dashboards/kubernetes"

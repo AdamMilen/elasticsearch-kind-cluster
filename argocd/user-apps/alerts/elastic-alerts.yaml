@@ -3,7 +3,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   labels:
-    release: kind-prometheus1
+    release: prometheus-operator
   name: elasticsearch-rule
   namespace: monitoring
 spec:

@@ -27,6 +27,13 @@ argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --user
 2. kubectl apply -f ./argocd/root-user-apps.yaml
 
 
+# changing elastic built-in user password
+kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- sh
+elasticsearch-users passwd elastic -p adminadmin
+
+
+## Manual way ##
+
 
 # install nginx ingress controller
 kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
@@ -54,18 +61,10 @@ helm install kind-prometheus --namespace monitoring --create-namespace prometheu
 # Installing prometheus exporter and setting the correct ClusterIP and without cert check
 helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter -f values-elasticsearch-exporter.yaml
 
-# Connecting exporter to Prometheus: option 1, Adding scrape config
-kubectl edit prometheus kind-prometheus-kube-prome-prometheus -n monitoring
 
-kubectl create secret generic additional-scrape-configs --from-file=prometheus-additional.yaml --dry-run=client -oyaml > additional-scrape-configs.yaml
-
-kubectl apply -f additional-scrape-configs.yaml -n monitoring
-
-# Connecting exporter to Prometheus: option 2, configuring servicemonitor
+# Connecting exporter to Prometheus: configuring servicemonitor
 kubectl apply -f servicemonitor.yaml
 
-# edit prometheus instance to matchlabel servicemonitor (release=kind-prometheus)
-kubectl edit prometheus kind-prometheus-kube-prome-prometheus -n monitoring
 
 # port-forward grafana
 export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kind-prometheus" -oname)

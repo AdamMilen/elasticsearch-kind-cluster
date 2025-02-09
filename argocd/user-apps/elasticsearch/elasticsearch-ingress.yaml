@@ -4,6 +4,7 @@ metadata:
   name: elasticsearch-ingress
   annotations:
     nginx.ingress.kubernetes.io/service-upstream: "true"
+    argocd.argoproj.io/sync-wave: "5"
 spec:
   ingressClassName: nginx
   rules:

@@ -1,7 +1,9 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: es-operator-argo-application
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: elasticsearch
   namespace: argocd
 spec:
   project: default
@@ -9,7 +11,7 @@ spec:
   source:
     repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
     targetRevision: dev
-    path: argocd/es-operator-manifests
+    path: argocd/user-apps/elasticsearch
   destination: 
     server: https://kubernetes.default.svc
     namespace: elastic-system

@@ -7,7 +7,7 @@ metadata:
   annotations:
       k8s-sidecar-target-directory = "/tmp/dashboards/kubernetes"
 data:
-  app-status.json: |
+  app-status.json: |-
     {
       "annotations": {
         "list": [

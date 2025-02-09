@@ -26,6 +26,7 @@ Check if kind cluster created <br />
 `kubectl get no`
 
 # Initial setup
+chmod +x ./initial_setup.sh
 Run `./initial_setup.sh` <br />
 This script installs argocd and linkerd on kind cluster. <br />
 

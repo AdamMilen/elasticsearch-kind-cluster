@@ -13,6 +13,8 @@ kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/st
 
 # get argocd password
 argocd admin initial-password -n argocd
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
 
 # port forward and login through cli
 kubectl port-forward -n argocd service/argocd-server 8443:443 &
@@ -36,7 +38,8 @@ linkerd check --pre <br />
 linkerd install --crds | kubectl apply -f - <br />
 linkerd install | kubectl apply -f - /n <br />
 
-
+# edit /etc/hosts
+127.0.0.1 nginx.elasticsearch.local
 
 ## Manual way ##
 

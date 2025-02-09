@@ -9,7 +9,8 @@ alertmanager:
       type: None
 prometheusOperator:
   admissionWebhooks:
+    enabled: false
     patch:
       enabled: false
-  tlsProxy:
+  tls:
     enabled: false

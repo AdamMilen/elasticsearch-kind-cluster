@@ -30,6 +30,7 @@ Deploying system application(Prometheus operator and Ingress) and user applicati
 1. `kubectl apply -f ./argocd/root-system-apps.yaml` Takes aprox 5 minutes <br />
 2. `kubectl apply -f ./argocd/root-user-apps.yaml` Takes aprox 3 minutes <br />
 
+[argocd](http://localhost:8443) <br />
 
 changing elastic built-in user password <br />
 **wait for elasticsearch application to be healthy then execute the command below** <br />

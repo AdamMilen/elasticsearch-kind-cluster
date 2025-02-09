@@ -14,3 +14,7 @@ spec:
     path: system-apps-applications
     repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
     targetRevision: dev
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

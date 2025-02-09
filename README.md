@@ -10,6 +10,15 @@ kubectl get no
 # install argocd
 kubectl create ns argocd
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+
+# get argocd password
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+
+# add repo git
+token=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
+argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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
+
+# port forward
 kubectl port-forward -n argocd service/argocd-server 8443:443
 
 # install nginx ingress controller

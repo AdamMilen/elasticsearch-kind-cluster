@@ -77,7 +77,7 @@ port forward and login through cli <br />
 kubectl port-forward -n argocd service/argocd-server 8443:443 & argocd login localhost:8443 <br /> <br />
 
 add repo git <br />
-token=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 argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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 <br /> <br />
+argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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 <br /> <br />
 
 # install nginx ingress controller
 kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
@@ -129,3 +129,9 @@ Think about adding recording rules, recording rules are essential for optimizing
 https://medium.com/@joudwawad/comprehensive-beginners-guide-to-kube-prometheus-in-kubernetes-monitoring-alerts-integration-4ade4fa8fa8c
 
 https://hooks.slack.com/services/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
+
+
+check why initial setup didnt work
+ /usr/bin/bash
+ /bin/bash
+

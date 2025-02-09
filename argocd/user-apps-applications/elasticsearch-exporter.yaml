@@ -1,0 +1,29 @@
+# application for deploying prometheus operator using argocd
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+  name: elasticsearch-exporter
+  namespace: argocd
+spec:
+  project: default
+  sources:
+  - repoURL: https://prometheus-community.github.io/helm-charts
+    targetRevision: 68.4.5
+    chart: prometheus-elasticsearch-exporter
+    helm:
+      valueFiles:
+      - $values/argocd/user-apps-applications/values-elasticsearch-exporter.yaml
+  - repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
+    targetRevision: dev
+    ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: default
+  syncPolicy:
+    syncOptions:
+    - CreateNamespace=true
+    automated:
+      selfHeal: true
+      prune: true

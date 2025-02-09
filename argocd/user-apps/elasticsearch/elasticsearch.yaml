@@ -1,6 +1,8 @@
 apiVersion: elasticsearch.k8s.elastic.co/v1
 kind: Elasticsearch
 metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "4"
   name: elastic-linkerd
 spec:
   version: 8.17.1

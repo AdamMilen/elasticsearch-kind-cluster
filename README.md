@@ -31,6 +31,12 @@ argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --user
 kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- sh
 elasticsearch-users passwd elastic -p adminadmin
 
+# Linkerd installation
+linkerd check --pre
+linkerd install --crds | kubectl apply -f -
+linkerd install | kubectl apply -f -
+
+
 
 ## Manual way ##
 

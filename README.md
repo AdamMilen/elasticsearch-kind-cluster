@@ -1,8 +1,21 @@
 # elasticsearch-assignment
+In a Nix shell environment, you can immediately use any program packaged with Nix, without installing it permanently. <br />
+Every command will be executed within nix shell. <br />
 
-copy shell.nix to your working directory <br />
-`nix-shell`
-`kind create cluster --name=elastic-linkerd --config=kind-config.yaml`
+Multi-user installation <br />
+Downloading Nix on WSL2 Windows <br />
+`sh <(curl -L https://nixos.org/nix/install) --daemon` <br />
+
+Downloading on MacOS <br />
+`sh <(curl -L https://nixos.org/nix/install)` <br />
+
+
+git clone the repo <br />
+Enter the repo folder and run the following commands: <br />
+`nix-shell` <br />
+`kind create cluster --name=elastic-linkerd --config=kind-config.yaml` <br />
+
+
 
 # check if kind cluster created
 `kubectl get no`

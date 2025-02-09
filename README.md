@@ -33,7 +33,7 @@ kubectl apply firerealm-secret.yaml
 kubectl apply elasticsearch.yaml
 
 # adding user devops
-kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -- sh
+kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- sh
 elasticsearch-users passwd elastic -p adminadmin
 
 kubectl port-forward service/quickstart-es-http 9200

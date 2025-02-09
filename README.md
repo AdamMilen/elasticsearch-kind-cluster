@@ -1,6 +1,6 @@
 # Elasticsearch Assignment
 
-This project sets up an Elasticsearch cluster with monitoring, logging, and alerting using Kubernetes, ArgoCD, and Prometheus within a Nix shell environment.
+This project sets up an Elasticsearch cluster with monitoring, logging, and alerting using Kubernetes, ArgoCD, and Prometheus within a Nix shell ephermal environment.
 
 ---
 
@@ -35,11 +35,15 @@ sh <(curl -L https://nixos.org/nix/install)
    ```sh
    nix-shell
    ```
-3. **Create a Kind cluster:**
+3. **Set up costum prompt:**
+   ```sh
+   PS1="$ "
+   ```
+4. **Create a Kind cluster:**
    ```sh
    kind create cluster --name=elastic-linkerd --config=kind-config.yaml
    ```
-4. **Verify cluster creation:**
+5. **Verify cluster creation:**
    ```sh
    kubectl get no
    ```
@@ -62,6 +66,8 @@ sh <(curl -L https://nixos.org/nix/install)
 
    - This installs ArgoCD and Linkerd on the Kind cluster.
    - You may be prompted for inputs during execution—stay attentive.
+   - Check the last output after the script is done, includes argocd credentials and linkerd dashboard.
+   - ignore grafana dashboard from linkerd
 
 3. **Deploy applications using the App of Apps pattern:**
 
@@ -71,7 +77,8 @@ sh <(curl -L https://nixos.org/nix/install)
    kubectl apply -f ./argocd/root-system-apps.yaml
    ```
 
-   *(Takes \~5 minutes)*
+   *(Takes \~5 minutes, make sure all apps are healthy. Only ingress service progressing)*
+   *If the ingress controller pod takes more than 6 minutes to be ready, delete it and k8s will deploy again*
 
    **Deploy user applications (ECK Operator, Elasticsearch, Exporter, and Alerts):**
 
@@ -96,6 +103,7 @@ sh <(curl -L https://nixos.org/nix/install)
   kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin
   ```
   *(This ensures the Elasticsearch Exporter can connect to the instance.)*
+  *Ignore the warning*
 
 ---
 
@@ -161,21 +169,22 @@ argocd login localhost:8443
 ### Add Git Repository
 
 ```sh
-argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password <YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
+argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git
 ```
 
 ### Install Nginx Ingress Controller
 
 ```sh
-kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+kubectl apply -f argocd/system-apps/ingress/ingress-nginx.yaml
 ```
 
 ### Install ECK Operator
 
 ```sh
-kubectl create -f https://download.elastic.co/downloads/eck/2.16.1/crds.yaml
-linkerd inject https://download.elastic.co/downloads/eck/2.16.1/operator.yaml | kubectl apply -f -
-kubectl apply -f elasticsearch.yaml
+kubectl create -f argocd/user-apps/es-operator/crds.yaml
+kubectl create -f argocd/user-apps/es-operator/operator.yaml
+kubectl apply -f argocd/user-apps/elasticsearch/elasticsearch.yaml
+kubectl apply -f argocd/user-apps/elasticsearch/elasticsearch-ingress.yaml
 ```
 
 ### Change Elasticsearch Built-in User Password
@@ -203,7 +212,7 @@ helm install kind-prometheus --namespace monitoring --create-namespace prometheu
 ### Install Prometheus Elasticsearch Exporter
 
 ```sh
-helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter -f argocd/system-apps-applications/values-elasticsearch-exporter.yaml
+helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter -f argocd/user-apps-applications/values-elasticsearch-exporter.yaml
 ```
 
 ### Configure ServiceMonitor for Prometheus Exporter
@@ -238,12 +247,6 @@ kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 909
 ```
 
 ---
-
-## Elasticsearch Alerting
-
-To prevent disks from filling up, configure **alerts for disk usage**. This ensures you receive notifications before reaching critical capacity.
-
-Consider adding **recording rules** to optimize query performance, especially as your environment scales. Recording rules precompute and store frequently used queries, reducing real-time query overhead.
 
 ### Setting Up Alerts to Slack
 

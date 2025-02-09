@@ -32,9 +32,9 @@ kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system
 elasticsearch-users passwd elastic -p adminadmin
 
 # Linkerd installation
-linkerd check --pre
-linkerd install --crds | kubectl apply -f -
-linkerd install | kubectl apply -f -
+linkerd check --pre <br />
+linkerd install --crds | kubectl apply -f - <br />
+linkerd install | kubectl apply -f - /n <br />
 
 
 

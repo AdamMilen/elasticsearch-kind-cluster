@@ -31,9 +31,17 @@ Deploying system application(Prometheus operator and Ingress) and user applicati
 
 
 changing elastic built-in user password <br />
-wait for elasticsearch application to be healthy then execute the command below <br />
+**wait for elasticsearch application to be healthy then execute the command below** <br />
 `kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin` <br />
-This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br />
+This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br /><br />
+
+Port forward prometheus and grafana instance <br />
+kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 & <br />
+
+kubectl port-forward svc/prometheus-operator-grafana -n monitoring 3000:80 & <br />
+Grafana: <br />
+user: admin
+password: prom-operator
 
 
 

@@ -1,138 +1,269 @@
-# elasticsearch-assignment
-In a Nix shell environment, you can immediately use any program packaged with Nix, without installing it permanently. <br />
-**Every command will be executed within nix shell.** <br />
+# Elasticsearch Assignment
 
-**Pre-requisits:** <br />
-Multi-user installation <br />
-Downloading Nix on WSL2 Windows <br />
-`sh <(curl -L https://nixos.org/nix/install) --daemon` <br />
+This project sets up an Elasticsearch cluster with monitoring, logging, and alerting using Kubernetes, ArgoCD, and Prometheus within a Nix shell environment.
 
-Downloading on MacOS <br />
-`sh <(curl -L https://nixos.org/nix/install)` <br />
+---
 
-Open new terminal and enter repo folder <br />
+## Prerequisites
 
-**Make sure docker desktop is running for kind cluster to work** <br />
+### Install Nix (Multi-user installation)
 
+#### On WSL2 (Windows):
 
-Enter the repo folder and run the following commands: <br />
-`git checkout dev` <br />
-`nix-shell` <br />
-`kind create cluster --name=elastic-linkerd --config=kind-config.yaml` <br />
+```sh
+sh <(curl -L https://nixos.org/nix/install) --daemon
+```
 
+#### On macOS:
 
+```sh
+sh <(curl -L https://nixos.org/nix/install)
+```
 
-Check if kind cluster created <br />
-`kubectl get no`
+- Open a new terminal and navigate to the repository folder.
+- Ensure **Docker Desktop** is running for the Kind cluster to function properly.
 
-# Initial setup
-chmod +x ./initial_setup.sh <br />
-Run `./initial_setup.sh` <br />
-This script installs argocd and linkerd on kind cluster. <br />
-You need to provide prompt throughout the script so keep watch <br />
+---
 
-Deploying system application(Prometheus operator and Ingress) and user applications(ECK operator, elasticsearch, exporter and alerts) using app of apps pattern <br />
-**Wait for system-apps to finish(only ingress-nginx svc progressing is okay) then apply the root-user-apps**
-1. `kubectl apply -f ./argocd/root-system-apps.yaml` Takes aprox 5 minutes <br />
-2. `kubectl apply -f ./argocd/root-user-apps.yaml` Takes aprox 3 minutes <br />
+## Getting Started
 
-ArgoCD link: <br />
-[argocd](http://localhost:8443) <br />
+1. **Checkout the development branch:**
+   ```sh
+   git checkout dev
+   ```
+2. **Enter Nix shell:**
+   ```sh
+   nix-shell
+   ```
+3. **Create a Kind cluster:**
+   ```sh
+   kind create cluster --name=elastic-linkerd --config=kind-config.yaml
+   ```
+4. **Verify cluster creation:**
+   ```sh
+   kubectl get no
+   ```
 
-changing elastic built-in user password <br />
-**wait for elasticsearch application to be healthy then execute the command below** <br />
-`kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin` <br />
-This will ensure elasticsearch-exporter can connect to the elasticsearch instance. <br /><br />
+---
 
-Port forward prometheus and grafana instance <br />
-`kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 &` <br />
+## Initial Setup
 
-`kubectl port-forward svc/prometheus-operator-grafana -n monitoring 3000:80 &` <br />
-Grafana: <br />
-user: admin <br />
-password: prom-operator <br />
+1. **Make the setup script executable:**
 
-Links:<br />
-[Prometheus](http://localhost:9090) <br />
-[Grafana](http://localhost:3000)
+   ```sh
+   chmod +x ./initial_setup.sh
+   ```
 
+2. **Run the script:**
 
+   ```sh
+   ./initial_setup.sh
+   ```
 
+   - This installs ArgoCD and Linkerd on the Kind cluster.
+   - You may be prompted for inputs during execution—stay attentive.
 
-edit /etc/hosts <br />
-127.0.0.1 nginx.elasticsearch.local <br />
-This will let you enter nginx.elasticsearch.local in the url. <br />
+3. **Deploy applications using the App of Apps pattern:**
 
+   **Deploy system applications (Prometheus Operator and Ingress):**
 
-## Manual way ##
+   ```sh
+   kubectl apply -f ./argocd/root-system-apps.yaml
+   ```
 
-# argocd installation
-install argocd <br />
-kubectl create ns argocd kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml <br /> <br />
+   *(Takes \~5 minutes)*
 
-get argocd password <br />
-argocd admin initial-password -n argocd kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d <br /> <br />
+   **Deploy user applications (ECK Operator, Elasticsearch, Exporter, and Alerts):**
 
-port forward and login through cli <br />
-kubectl port-forward -n argocd service/argocd-server 8443:443 & argocd login localhost:8443 <br /> <br />
+   ```sh
+   kubectl apply -f ./argocd/root-user-apps.yaml
+   ```
 
-add repo git <br />
-argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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 <br /> <br />
+   *(Takes \~3 minutes)*
 
-# install nginx ingress controller
+4. **Access ArgoCD UI:**
+
+   - [ArgoCD Dashboard](http://localhost:8443)
+
+---
+
+## Elasticsearch Configuration
+
+### Change the Elasticsearch Built-in User Password
+
+- **Wait until Elasticsearch is healthy**, then run:
+  ```sh
+  kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin
+  ```
+  *(This ensures the Elasticsearch Exporter can connect to the instance.)*
+
+---
+
+## Monitoring Setup
+
+### Port Forwarding Services
+
+- **Prometheus:**
+
+  ```sh
+  kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 &
+  ```
+
+- **Grafana:**
+
+  ```sh
+  kubectl port-forward svc/prometheus-operator-grafana -n monitoring 3000:80 &
+  ```
+
+  - **Grafana Credentials:**
+    - **User:** admin
+    - **Password:** prom-operator
+
+- **Access Dashboards:**
+
+  - [Prometheus](http://localhost:9090)
+  - [Grafana](http://localhost:3000)
+
+---
+
+## DNS Configuration
+
+Edit the **/etc/hosts** file to enable accessing Nginx using a friendly domain:
+
+```sh
+127.0.0.1 nginx.elasticsearch.local
+```
+
+---
+
+## Manual Installation Guide
+
+### Install ArgoCD
+
+```sh
+kubectl create ns argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+```
+
+### Retrieve ArgoCD Admin Password
+
+```sh
+kubectl -n argocd get secret argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d
+```
+
+### Port Forward and Login
+
+```sh
+kubectl port-forward -n argocd service/argocd-server 8443:443 &
+argocd login localhost:8443
+```
+
+### Add Git Repository
+
+```sh
+argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password <YOUR_GITHUB_PERSONAL_ACCESS_TOKEN>
+```
+
+### Install Nginx Ingress Controller
+
+```sh
 kubectl apply -f https://kind.sigs.k8s.io/examples/ingress/deploy-ingress-nginx.yaml
+```
 
+### Install ECK Operator
 
-# Install ECK operator
-kubectl create -f https://download.elastic.co/downloads/eck/2.16.1/crds.yaml <br />
-linkerd inject https://download.elastic.co/downloads/eck/2.16.1/operator.yaml | kubectl apply -f - <br />
-kubectl apply elasticsearch.yaml <br />
+```sh
+kubectl create -f https://download.elastic.co/downloads/eck/2.16.1/crds.yaml
+linkerd inject https://download.elastic.co/downloads/eck/2.16.1/operator.yaml | kubectl apply -f -
+kubectl apply -f elasticsearch.yaml
+```
 
-# changing elastic built-in user password
-kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin <br />
+### Change Elasticsearch Built-in User Password
 
-You can port forward elasticsearch service <br />
-kubectl port-forward service/quickstart-es-http 9200 <br />
+```sh
+kubectl exec -c elasticsearch -it elastic-linkerd-es-default-0 -n elastic-system -- elasticsearch-users passwd elastic -p adminadmin
+```
 
-# Install Prometheus Operator (grafana & Alertmanager included)
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts <br />
-helm repo update <br />
+### Port Forward Elasticsearch
 
-helm install kind-prometheus --namespace monitoring --create-namespace prometheus-community/kube-prometheus-stack -f argocd/system-apps-applications/values-prom-operator.yaml <br />
+```sh
+kubectl port-forward service/quickstart-es-http 9200
+```
 
-# Installing prometheus exporter and setting the correct ClusterIP and without cert check
-helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter -f argocd/system-apps-applications/values-elasticsearch-exporter.yaml <br />
+---
 
+## Install Prometheus Operator (Includes Grafana & AlertManager)
 
-# Connecting exporter to Prometheus: configuring servicemonitor
-kubectl apply -f servicemonitor.yaml <br />
+```sh
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+helm install kind-prometheus --namespace monitoring --create-namespace prometheus-community/kube-prometheus-stack -f argocd/system-apps-applications/values-prom-operator.yaml
+```
 
-# Linkerd installation
-linkerd check --pre <br />
-linkerd install --crds | kubectl apply -f - <br />
-linkerd install | kubectl apply -f - /n <br />
+### Install Prometheus Elasticsearch Exporter
 
-# port-forward grafana
-export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kind-prometheus" -oname) <br />
+```sh
+helm install elasticsearch-exporter prometheus-community/prometheus-elasticsearch-exporter -f argocd/system-apps-applications/values-elasticsearch-exporter.yaml
+```
 
-kubectl --namespace monitoring port-forward $POD_NAME 3000 & <br />
+### Configure ServiceMonitor for Prometheus Exporter
 
-# port-forward prometheus
-kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 & <br />
+```sh
+kubectl apply -f servicemonitor.yaml
+```
 
-# Alerts for elasticsearch
-In order to prevent disks from filling up in the future and act proactively, you should create alerts based on **disk usage that will notify you when the disk starts filling up**.
+---
 
-Think about adding recording rules, recording rules are essential for optimizing the performance of your Prometheus setup. As your environment grows, the number of metrics and complexity of queries increases. Running complex queries in real-time can become slow and resource-intensive.
+## Install Linkerd
 
-# setting up alerts to slack
-https://medium.com/@joudwawad/comprehensive-beginners-guide-to-kube-prometheus-in-kubernetes-monitoring-alerts-integration-4ade4fa8fa8c
+```sh
+linkerd check --pre
+linkerd install --crds | kubectl apply -f -
+linkerd install | kubectl apply -f -
+```
 
-https://hooks.slack.com/services/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
+### Port Forward Services
 
+#### Grafana:
 
-check why initial setup didnt work
- /usr/bin/bash
- /bin/bash
+```sh
+export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/name=grafana,app.kubernetes.io/instance=kind-prometheus" -o name)
+kubectl --namespace monitoring port-forward $POD_NAME 3000 &
+```
 
-check fo finalizer argocd in root applications
+#### Prometheus:
+
+```sh
+kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 &
+```
+
+---
+
+## Elasticsearch Alerting
+
+To prevent disks from filling up, configure **alerts for disk usage**. This ensures you receive notifications before reaching critical capacity.
+
+Consider adding **recording rules** to optimize query performance, especially as your environment scales. Recording rules precompute and store frequently used queries, reducing real-time query overhead.
+
+### Setting Up Alerts to Slack
+
+- [Guide to Kube-Prometheus Alert Integration](https://medium.com/@joudwawad/comprehensive-beginners-guide-to-kube-prometheus-in-kubernetes-monitoring-alerts-integration-4ade4fa8fa8c)
+- **Slack Webhook URL:**
+  ```sh
+  https://hooks.slack.com/services/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
+  ```
+
+---
+
+## Debugging Setup Issues
+
+If the initial setup script fails, try running the script with different shells:
+
+```sh
+/usr/bin/bash
+/bin/bash
+```
+
+---
+
+This README provides a structured and easy-to-follow guide for setting up Elasticsearch, monitoring, and alerting within a Kubernetes environment using Nix, Kind, and ArgoCD.

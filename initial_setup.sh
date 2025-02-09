@@ -13,7 +13,7 @@ kubectl port-forward -n argocd service/argocd-server 8443:443 &
 echo "login into argocd and adding repo"
 sleep 8
 argocd login localhost:8443 --username admin --password "$PASSWORD" --insecure
-argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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
+argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git 
 
 # Installing linkerd
 linkerd check --pre

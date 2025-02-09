@@ -13,6 +13,7 @@ Downloading on MacOS <br />
 git clone the repo <br />
 git clone https://AdamMilen:<pat>@github.com/https://github.com/AdamMilen/elasticsearch-assignment.git <br />
 Enter the repo folder and run the following commands: <br />
+`git checkout dev` <br />
 `nix-shell` <br />
 `kind create cluster --name=elastic-linkerd --config=kind-config.yaml` <br />
 

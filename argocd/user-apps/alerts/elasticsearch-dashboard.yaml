@@ -25,7 +25,7 @@ data:
           }
         ]
       },
-      "description": "A quickstart to setup the Prometheus Elasticsearch Exporter with preconfigured dashboards, alerting rules, and recording rules.",
+      "description": "Prometheus Elasticsearch Exporter dashboard ",
       "editable": true,
       "fiscalYearStartMonth": 0,
       "graphTooltip": 1,
@@ -870,7 +870,7 @@ data:
       },
       "timepicker": {},
       "timezone": "browser",
-      "title": "Elasticsearch Exporter Quickstart and Dashboard",
+      "title": "Elasticsearch Exporter Dashboard",
       "uid": "4yyL6dBMk",
       "version": 5,
       "weekStart": ""

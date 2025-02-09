@@ -9,7 +9,7 @@ metadata:
 spec:
   project: default
   source:
-    path: system-apps
+    path: argocd/system-apps
     repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
     targetRevision: dev
   destination:

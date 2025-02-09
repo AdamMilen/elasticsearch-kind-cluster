@@ -2,12 +2,15 @@
 In a Nix shell environment, you can immediately use any program packaged with Nix, without installing it permanently. <br />
 **Every command will be executed within nix shell.** <br />
 
+**Pre-requisits:** <br />
 Multi-user installation <br />
 Downloading Nix on WSL2 Windows <br />
 `sh <(curl -L https://nixos.org/nix/install) --daemon` <br />
 
 Downloading on MacOS <br />
 `sh <(curl -L https://nixos.org/nix/install)` <br />
+
+**Make sure docker desktop is running for kind cluster to work** <br />
 
 
 git clone the repo <br />

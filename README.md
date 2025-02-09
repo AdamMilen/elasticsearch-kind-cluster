@@ -23,8 +23,8 @@ token=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
 argocd repo add https://github.com/AdamMilen/elasticsearch-assignment.git --username AdamMilen --password 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
 
 # deploying system application and user applications using app of apps pattern
-1. kubectl apply -f argocd/system-apps.yaml
-2. kubectl apply -f argocd/root-user-apps.yaml
+1. kubectl apply -f ./argocd/root-system-apps.yaml
+2. kubectl apply -f ./argocd/root-user-apps.yaml
 
 
 
@@ -73,7 +73,7 @@ export POD_NAME=$(kubectl --namespace monitoring get pod -l "app.kubernetes.io/n
 kubectl --namespace monitoring port-forward $POD_NAME 3000 &
 
 # port-forward prometheus
-kubectl port-forward svc/kind-prometheus-kube-prome-prometheus -n monitoring 9090:9090 &
+kubectl port-forward svc/prometheus-operator-kube-p-prometheus -n monitoring 9090:9090 &
 
 # Alerts for elasticsearch
 In order to prevent disks from filling up in the future and act proactively, you should create alerts based on **disk usage that will notify you when the disk starts filling up**.

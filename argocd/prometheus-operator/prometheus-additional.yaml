@@ -1,4 +1,0 @@
-# scrape-config job for prometheus, DON'T NEED
-- job_name: "elasticsearch-exporter"
-  static_configs:
-    - targets: ["elasticsearch-exporter-prometheus-elasticsearch-exporter.default.svc.cluster.local:9108"]

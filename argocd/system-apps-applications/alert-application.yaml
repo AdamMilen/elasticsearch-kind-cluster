@@ -1,0 +1,17 @@
+# application for deploying prometheus operator using argocd
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-wave: "2"
+  name: prometheus-alerts
+  namespace: argocd
+spec:
+  project: default
+  source:
+    path: system-apps
+    repoURL: https://github.com/AdamMilen/elasticsearch-assignment.git
+    targetRevision: dev
+destination:
+  server: https://kubernetes.default.svc
+  namespace: monitoring

@@ -8,15 +8,45 @@ metadata:
   namespace: monitoring
 spec:
   groups:
-  - name: ElasticsearchTooFewNodesRunning
+  - name: Elasticsearch
     rules:
 
       - alert: ElasticsearchTooFewNodesRunning
         expr: elasticsearch_cluster_health_number_of_nodes < 1 # supposed to be 3
-        for: 1m
+        for: 5m
         labels:
           severity: critical
           app: elasticsearch
         annotations:
           summary: "Elasticsearch running on less than 1 nodes" # supposed to be 3
           description: "There are only {{$value}} < 1 Elasticsearch nodes running." # supposed to be 3
+      
+      - alert: ElasticsearchTooManyOpenFiles
+        expr: elasticsearch_process_open_files_count > 60000
+        for: 5m
+        labels:
+          severity: critical
+          app: elasticsearch
+        annotations:
+          summary: "Elasticsearch has too many open files"
+          description: "The number of open file descriptors is above 60,000, which may cause failures"
+
+      - alert: ElasticsearchHighDiskUsage
+        expr: (elasticsearch_filesystem_data_available_bytes / elasticsearch_filesystem_data_size_bytes) * 100 < 20
+        for: 5m
+        labels:
+          severity: warning
+          app: elasticsearch
+        annotations:
+          summary: "Elasticsearch high disk usage"
+          description: "An elasticsearch node has less than 20% free disk space."
+
+      - alert: ElasticsearchHeapTooHigh
+        expr: elasticsearch_jvm_memory_used_bytes{area="heap"} / elasticsearch_jvm_memory_max_bytes{area="heap"} > 0.9
+        for: 15m
+        labels:
+          severity: critical
+          app: elasticsearch
+        annotations:
+          summary: "Elasticsearch node {{$labels.node}} heap usage is high"
+          description: "The heap usage is over 90% for 15m"

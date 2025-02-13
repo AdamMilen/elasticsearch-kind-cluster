@@ -11,15 +11,27 @@ spec:
   - name: Elasticsearch
     rules:
 
+      # elasticsearch cluster can still function because node 2 has the replicated data of node 3
       - alert: ElasticsearchTooFewNodesRunning
-        expr: elasticsearch_cluster_health_number_of_nodes < 1 # supposed to be 3
+        expr: elasticsearch_cluster_health_number_of_nodes < 3
+        for: 5m
+        labels:
+          severity: warning
+          app: elasticsearch
+        annotations:
+          summary: "Elasticsearch running on less than 3 nodes"
+          description: "There are only {{$value}} < 3 Elasticsearch nodes running."
+      
+      # elasticsearch cluster lose data beacause node 1 cannot hold the replciated data of node 2 and 3
+      - alert: ElasticsearchTooFewNodesRunning
+        expr: elasticsearch_cluster_health_number_of_nodes < 2
         for: 5m
         labels:
           severity: critical
           app: elasticsearch
         annotations:
-          summary: "Elasticsearch running on less than 1 nodes" # supposed to be 3
-          description: "There are only {{$value}} < 1 Elasticsearch nodes running." # supposed to be 3
+          summary: "Elasticsearch running on less than 2 nodes"
+          description: "There are only {{$value}} < 2 Elasticsearch nodes running."
       
       - alert: ElasticsearchTooManyOpenFiles
         expr: elasticsearch_process_open_files_count > 60000

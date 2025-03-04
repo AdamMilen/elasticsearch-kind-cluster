@@ -1,4 +1,4 @@
-# Elasticsearch Assignment
+# Elasticsearch cluster project
 
 This project sets up an Elasticsearch cluster with monitoring, logging, and alerting using Kubernetes, ArgoCD, and Prometheus within a Nix shell ephermal environment.
 
